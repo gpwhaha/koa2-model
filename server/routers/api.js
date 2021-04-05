@@ -9,8 +9,8 @@ const routers = router
   .get('/user/getUserInfo.json', userInfoController.getLoginUserInfo)
   .post('/user/signIn.json', userInfoController.signIn)
   .post('/user/signUp.json', userInfoController.signUp)
-  .get('/user/images', userInfoController.getImages) //获取用户照片
-  .post('/user/allimages', userInfoController.getAllImages) //获取所有商品照片
+  .get('/user/images', userInfoController.getImages)
+  .post('/user/allimages', userInfoController.getAllImages)
 
 
 module.exports = routers

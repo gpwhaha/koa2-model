@@ -11,7 +11,7 @@
     "start_static": "webpack --config ./static/build/webpack.prod.config.js",
     "start_server": "node ./server/app.js",
     "start": "npm run start_static & npm run start_server",
-    "server_starts": "nodemon ./server/app.js"
+    "server_starts":"nodemon ./server/app.js"
   },
   "author": "chenshenhai",
   "license": "MIT",
@@ -32,7 +32,6 @@
     "koa-session-minimal": "^3.0.3",
     "koa-static": "^3.0.0",
     "koa-views": "^5.2.0",
-    "log4js": "^6.3.0",
     "mysql": "^2.12.0",
     "npm": "^6.4.1",
     "prop-types": "^15.6.2",

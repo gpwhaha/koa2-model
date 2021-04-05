@@ -162,7 +162,7 @@ module.exports = {
       data: null,
     }
     // console.log('ids:', id)
-    if (id && id != null) {
+    if (id) {
       let userInfo = await userInfoService.handleGetUserImages(id)
       if (userInfo) {
         result.data = userInfo
