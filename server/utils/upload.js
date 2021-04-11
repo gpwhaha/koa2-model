@@ -16,20 +16,16 @@ async function uploadOs(ctx) {
     let uppath = file.path
     // 创建可读流
     let reader = fs.createReadStream(uppath);
-
-    let newFilename = new Date().getTime() + '.' + file.name.split('.')[1];
-
+    //文件名
+    let pictureName = Math.random().toString(16).substr(2)
+    let newFilename = pictureName + '-' + UtilDatetime.parseStampToFormat(null, 'YYYY/MM/DD') + '.' + file.name.split('.')[1];
     cosUtil.init()
-    // console.log('OS',file)
-
     let cosResult = await cosUtil.putObject({
       key: `images/${newFilename}`,
       buffer: reader,
     })
     resolve(cosResult);
-  }).catch(err => reject(err))
-
-
+  }).catch(err => throws(err))
 }
 
 
@@ -91,13 +87,6 @@ function uploadPicture(ctx, options) {
 
       let saveTo = path.join(_uploadFilePath)
       file.pipe(fs.createWriteStream(saveTo))
-
-      // cosUtil.init()
-      // cosUtil.putObject({
-      //   key: `images/${pictureName}`,
-      //   buffer: fs.createReadStream(saveTo),
-      // })
-
 
       // file.on('data', function(data) {
       //   console.log('File-data [' + fieldname + '] got ' + data.length + ' bytes')

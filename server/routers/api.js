@@ -4,6 +4,7 @@
 
 const router = require('koa-router')()
 const userInfoController = require('./../controllers/user-info')
+const uploadController = require('./../controllers/upload')
 
 const routers = router
   .get('/user/getUserInfo.json', userInfoController.getLoginUserInfo)
@@ -12,7 +13,7 @@ const routers = router
   .get('/user/images', userInfoController.getImages)
   .post('/user/allimages', userInfoController.getAllImages)
   .post('/user/upload', userInfoController.upload)
-  .post('/user/uploadOS', userInfoController.uploadOS)
+  .post('/user/uploadOS', uploadController.uploadOS)
 
 
 module.exports = routers

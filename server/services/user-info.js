@@ -107,7 +107,7 @@ const user = {
   },
 
   /**
-   * 
+   * 分页查询图片
    * @param {number} start 
    * @param {number} end 
    * @returns 

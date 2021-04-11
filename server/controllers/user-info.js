@@ -1,7 +1,7 @@
 const userInfoService = require('./../services/user-info')
 const userCode = require('./../codes/user')
 const upload = require('../utils/upload')
-const cosUtil = require('../config/tencentOS')
+
 module.exports = {
 
   /**

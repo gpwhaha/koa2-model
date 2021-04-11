@@ -1,33 +1,4 @@
 var COS = require('cos-nodejs-sdk-v5');
-// var cos = new COS({
-//     SecretId: 'AKIDEEo7j4azX6PkobfV9ZZOzLQbdZNHRQ5V',
-//     SecretKey: 'hBuVt3xlXKrdDWaOxVnuktmQoyzkqjPU'
-// });
-// cos.putBucket({
-//   Bucket: 'gpw-9708-1304091163',
-//   Region: 'ap-nanjing'
-// }, function(err, data) {
-//   console.log(err || data);
-// });
-// cos.getBucket({
-//   Bucket: 'gpw-9708-1304091163', /* 必须 */
-//   Region: 'ap-nanjing',     /* 必须 */
-//   Prefix: 'images/',           /* 非必须 */
-// }, function(err, data) {
-//   console.log(err || data.Contents);
-// });
-// cos.putObject({
-//   Bucket: 'gpw-9708-1304091163', /* 必须 */
-//   Region: 'ap-nanjing',    /* 必须 */
-//   Key: 'exampleobject',              /* 必须 */
-//   StorageClass: 'STANDARD',
-//   Body: fs.createReadStream('./exampleobject'), // 上传文件对象
-//   onProgress: function(progressData) {
-//       console.log(JSON.stringify(progressData));
-//   }
-// }, function(err, data) {
-//   console.log(err || data);
-// });
 
 const cosUtil = {
   cos: null,
