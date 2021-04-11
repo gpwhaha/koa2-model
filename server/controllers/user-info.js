@@ -1,6 +1,7 @@
 const userInfoService = require('./../services/user-info')
 const userCode = require('./../codes/user')
-
+const upload = require('../utils/upload')
+const cosUtil = require('../config/tencentOS')
 module.exports = {
 
   /**
@@ -154,7 +155,9 @@ module.exports = {
    * @param {*} ctx 上下文对象
    */
   async getImages(ctx) {
-    let {id} = ctx.query
+    let {
+      id
+    } = ctx.query
 
     let result = {
       success: false,
@@ -193,7 +196,7 @@ module.exports = {
       data: null,
     }
 
-    let images = await userInfoService.handleGetAllImages(start, end )
+    let images = await userInfoService.handleGetAllImages(start, end)
     if (images) {
       result.data = images
       result.success = true
@@ -204,5 +207,42 @@ module.exports = {
     ctx.body = result
   },
 
+  async upload(ctx,options){
+    let result = {
+      success: false,
+      message: '',
+      data: null,
+    }
+    let results = await upload.uploadPicture(ctx,options);
+    console.log('上传：',results)
+    if(results){
+      result.data = results;
+    } else{
+      result.message = '失败'
+    }
+    ctx.body = results;
+  },
+
+
+  async uploadOS(ctx,options){
+    let result = {
+      success: false,
+      code:'',
+      message: '',
+      data: null,
+    }
+    let results = await upload.uploadOs(ctx,options);
+    console.log('上传：',results)
+    if(results){
+      result.data = results.Location;
+      result.code = results.statusCode;
+      result.message = '上传成功';
+      result.success = true;
+    } else{
+      result.message = '失败'
+    }
+    // console.log('OS123:',result)
+    ctx.body = result;
+  }
 
 }

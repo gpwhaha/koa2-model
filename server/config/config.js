@@ -48,7 +48,7 @@ module.exports = {
                 "path": responsePath
             },
             "handleLogger": {
-                "type": "dateFile",
+                "type": "dateFile", 
                 "filename": handleLogPath,
                 "pattern": "-yyyy-MM-dd.log",
                 "alwaysIncludePattern": true,

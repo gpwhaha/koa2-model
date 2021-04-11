@@ -11,6 +11,8 @@ const routers = router
   .post('/user/signUp.json', userInfoController.signUp)
   .get('/user/images', userInfoController.getImages)
   .post('/user/allimages', userInfoController.getAllImages)
+  .post('/user/upload', userInfoController.upload)
+  .post('/user/uploadOS', userInfoController.uploadOS)
 
 
 module.exports = routers
