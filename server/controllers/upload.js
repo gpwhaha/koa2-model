@@ -17,7 +17,7 @@ module.exports = {
     }
     let results = await upload.uploadOs(ctx,options);
     let uploads = await uploadInfoService.upload(results.Location);
-    console.log('上传：',uploads)
+    // console.log('上传：',uploads)
     if(results){
       result.data = results.Location;
       result.code = results.statusCode;

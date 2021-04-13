@@ -15,6 +15,17 @@ const routers = require('./routers/index')
 const logsUtil = require('./utils/logs.js');
 
 const app = new Koa()
+const check = require('./utils/checkToken')
+const koajwt = require('koa-jwt');
+// redis
+const sessions = require("koa-session2");
+const Store = require("./config/Store");
+
+// 使用redis作为session存储
+// app.use(sessions({
+//   store: new Store(),
+//   key: "SESSIONID",  // default "koa:sess"
+// }));
 
 // session存储配置
 const sessionMysqlConfig = {
@@ -67,7 +78,14 @@ app.use(cors(
 //   }
 // }  
 ))
-
+//token检查
+app.use(check)
+//koa-jwt 中间件来进行验证
+// app.use(koajwt({
+//   secret: 'my_token'
+// }).unless({
+//   path: [/\/api\/user\/signIn/]
+// }))
 // 配置控制台日志中间件
 app.use(koaLogger())
 

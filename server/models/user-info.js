@@ -47,6 +47,7 @@ const user = {
     } else {
       result = null
     }
+    console.log('用户：',result)
     return result
   },
 
@@ -59,7 +60,7 @@ const user = {
 
     let result = await dbUtils.select(
       'user_info',
-      ['id', 'email', 'name', 'detail_info', 'create_time', 'modified_time', 'modified_time' ])
+      ['id',  'name',  'c_time' ])
     if ( Array.isArray(result) && result.length > 0 ) {
       result = result[0]
     } else {

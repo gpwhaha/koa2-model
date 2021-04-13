@@ -40,6 +40,7 @@ const user = {
     let resultData = await userModel.getOneByUserNameAndPassword({
       'password': formData.password,
       'name': formData.userName})
+      console.log('formData',formData)
     return resultData
   },
 
@@ -54,10 +55,10 @@ const user = {
     let resultData = await userModel.getUserInfoByUserName( userName ) || {}
     let userInfo = {
       // id: resultData.id,
-      email: resultData.email,
+      // email: resultData.email,
       userName: resultData.name,
-      detailInfo: resultData.detail_info,
-      createTime: resultData.create_time
+      // detailInfo: resultData.detail_info,
+      createTime: resultData.c_time
     }
     return userInfo
   },

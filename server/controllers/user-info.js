@@ -1,6 +1,7 @@
 const userInfoService = require('./../services/user-info')
 const userCode = require('./../codes/user')
 const upload = require('../utils/upload')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
 
@@ -30,14 +31,24 @@ module.exports = {
       result.code = 'FAIL_USER_NO_EXIST',
         result.message = userCode.FAIL_USER_NO_EXIST
     }
-
+    console.log('dl:', formData)
+    console.log('dl2:', userResult)
     if (formData.source === 'form' && result.success === true) {
       let session = ctx.session
       session.isLogin = true
       session.userName = userResult.name
       session.userId = userResult.id
 
-      ctx.redirect('/work')
+      // 生成session_id
+      ctx.session.uid = JSON.stringify(userResult.id);
+      // 帐号密码正确  创建token   
+    //payload中写入一些值  time:创建日期  timeout：多长时间后过期
+      let payload = {userNumber:userResult.name,time:new Date().getTime(),timeout:1000*60*60*2}
+      let token = jwt.sign(payload,'my_token');
+      result.data = {token:token};
+
+      ctx.body = result
+      // ctx.redirect('/work')
     } else {
       ctx.body = result
     }
@@ -109,7 +120,10 @@ module.exports = {
     let userName = session.userName
 
     console.log('session=', session)
-
+    // 判断用户是否登录，获取cookie里的SESSIONID
+    const SESSIONID = ctx.cookies.get('USER_SID')
+    // const SESSIONID = ctx.cookies.get('SESSIONID')
+    console.log('SESSIONID=', SESSIONID)
     let result = {
       success: false,
       message: '',
@@ -120,6 +134,8 @@ module.exports = {
       if (userInfo) {
         result.data = userInfo
         result.success = true
+        result.SESSIONID = SESSIONID
+        result.message = '登陆成功'
       } else {
         result.message = userCode.FAIL_USER_NO_LOGIN
       }
@@ -207,42 +223,20 @@ module.exports = {
     ctx.body = result
   },
 
-  async upload(ctx,options){
+  async upload(ctx, options) {
     let result = {
       success: false,
       message: '',
       data: null,
     }
-    let results = await upload.uploadPicture(ctx,options);
-    console.log('上传：',results)
-    if(results){
+    let results = await upload.uploadPicture(ctx, options);
+    // console.log('上传：',results)
+    if (results) {
       result.data = results;
-    } else{
+    } else {
       result.message = '失败'
     }
     ctx.body = results;
   },
-
-
-  async uploadOS(ctx,options){
-    let result = {
-      success: false,
-      code:'',
-      message: '',
-      data: null,
-    }
-    let results = await upload.uploadOs(ctx,options);
-    console.log('上传：',results)
-    if(results){
-      result.data = results.Location;
-      result.code = results.statusCode;
-      result.message = '上传成功';
-      result.success = true;
-    } else{
-      result.message = '失败'
-    }
-    // console.log('OS123:',result)
-    ctx.body = result;
-  }
 
 }
