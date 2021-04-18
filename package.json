@@ -11,7 +11,7 @@
     "start_static": "webpack --config ./static/build/webpack.prod.config.js",
     "start_server": "node ./server/app.js",
     "start": "npm run start_static & npm run start_server",
-    "server_starts": "nodemon ./server/app.js"
+    "serve": "nodemon ./server/app.js"
   },
   "author": "chenshenhai",
   "license": "MIT",
