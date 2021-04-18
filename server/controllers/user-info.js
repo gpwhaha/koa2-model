@@ -2,6 +2,7 @@ const userInfoService = require('./../services/user-info')
 const userCode = require('./../codes/user')
 const upload = require('../utils/upload')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
 module.exports = {
 
@@ -23,6 +24,15 @@ module.exports = {
     if (userResult) {
       if (formData.username === userResult.name) {
         result.success = true
+        //密码校验
+        let isVaild = await bcrypt.compare(`${formData.password}`, `${userResult.password}`)
+        if(!isVaild){
+          result.message = userCode.FAIL_USER_PASSWORD_ERROR;
+          result.success = false;
+          result.code = 'FAIL_USER_NAME_OR_PASSWORD_ERROR'
+        }else{
+          result.message = '登录成功';
+        }
       } else {
         result.message = userCode.FAIL_USER_NAME_OR_PASSWORD_ERROR
         result.code = 'FAIL_USER_NAME_OR_PASSWORD_ERROR'
@@ -34,11 +44,6 @@ module.exports = {
 
     if (result.success === true) {
       let session = ctx.session
-      // session.isLogin = true
-      // session.userName = userResult.name
-      // session.userId = userResult.id
-      // 生成session_id
-      // ctx.session.uid = JSON.stringify(userResult.id);
       // 帐号密码正确  创建token   
       //payload中写入一些值  time:创建日期  timeout：多长时间后过期
       let payload = {
@@ -48,13 +53,13 @@ module.exports = {
       }
       let token = jwt.sign(payload, 'my_token');
       session.TokenKey = token
-      let userInfo = await userInfoService.getUserInfoByUserName(userResult.name)
+      // let userInfo = await userInfoService.getUserInfoByUserName(userResult.name)  
+      // result.data = userInfo;
+      result.data = {
+        token
+      };
       result.code = 200;
-
-      result.data = userInfo;
-      result.data.token = token;
       ctx.body = result
-      // ctx.redirect('/work')
     } else {
       ctx.body = result
     }
@@ -134,7 +139,7 @@ module.exports = {
       success: false,
       message: '',
       data: null,
-      code:200
+      code: 200
     }
 
     let userInfo = await userInfoService.getUserInfoByUserName(userName)

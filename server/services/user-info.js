@@ -37,7 +37,7 @@ const user = {
    * @return {object}          登录业务操作结果
    */
   async signIn( formData ) {
-    let resultData = await userModel.getOneByUserNameAndPassword({
+    let resultData = await userModel.getExistOne({
       'password': formData.password,
       'name': formData.username})
     return resultData
@@ -53,12 +53,10 @@ const user = {
     
     let resultData = await userModel.getUserInfoByUserName( userName ) || {}
     let userInfo = {
-      // id: resultData.id,
-      // email: resultData.email,
+
       name: resultData.name,
-      // detailInfo: resultData.detail_info,
       createTime: resultData.c_time,
-      roles:['admin']
+      // roles:['admin']
     }
     return userInfo
   },
