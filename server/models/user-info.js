@@ -47,7 +47,7 @@ const user = {
     } else {
       result = null
     }
-    console.log('用户：',result)
+    // console.log('用户：',result)
     return result
   },
 

@@ -21,7 +21,7 @@ module.exports = {
     let userResult = await userInfoService.signIn(formData)
 
     if (userResult) {
-      if (formData.userName === userResult.name) {
+      if (formData.username === userResult.name) {
         result.success = true
       } else {
         result.message = userCode.FAIL_USER_NAME_OR_PASSWORD_ERROR
@@ -31,22 +31,28 @@ module.exports = {
       result.code = 'FAIL_USER_NO_EXIST',
         result.message = userCode.FAIL_USER_NO_EXIST
     }
-    console.log('dl:', formData)
-    console.log('dl2:', userResult)
-    if (formData.source === 'form' && result.success === true) {
+
+    if (result.success === true) {
       let session = ctx.session
-      session.isLogin = true
-      session.userName = userResult.name
-      session.userId = userResult.id
-
+      // session.isLogin = true
+      // session.userName = userResult.name
+      // session.userId = userResult.id
       // 生成session_id
-      ctx.session.uid = JSON.stringify(userResult.id);
+      // ctx.session.uid = JSON.stringify(userResult.id);
       // 帐号密码正确  创建token   
-    //payload中写入一些值  time:创建日期  timeout：多长时间后过期
-      let payload = {userNumber:userResult.name,time:new Date().getTime(),timeout:1000*60*60*2}
-      let token = jwt.sign(payload,'my_token');
-      result.data = {token:token};
+      //payload中写入一些值  time:创建日期  timeout：多长时间后过期
+      let payload = {
+        userNumber: userResult.name,
+        time: new Date().getTime(),
+        timeout: 1000 * 60 * 60 * 2
+      }
+      let token = jwt.sign(payload, 'my_token');
+      session.TokenKey = token
+      let userInfo = await userInfoService.getUserInfoByUserName(userResult.name)
+      result.code = 200;
 
+      result.data = userInfo;
+      result.data.token = token;
       ctx.body = result
       // ctx.redirect('/work')
     } else {
@@ -128,19 +134,19 @@ module.exports = {
       success: false,
       message: '',
       data: null,
+      code:200
     }
-    if (isLogin === true && userName) {
-      let userInfo = await userInfoService.getUserInfoByUserName(userName)
-      if (userInfo) {
-        result.data = userInfo
-        result.success = true
-        result.SESSIONID = SESSIONID
-        result.message = '登陆成功'
-      } else {
-        result.message = userCode.FAIL_USER_NO_LOGIN
-      }
+
+    let userInfo = await userInfoService.getUserInfoByUserName(userName)
+    if (userInfo) {
+      result.data = userInfo
+      result.success = true
+      result.SESSIONID = SESSIONID
+      result.message = '登陆成功'
+      result.code = 200
     } else {
-      // TODO
+      result.message = userCode.FAIL_USER_NO_LOGIN
+      result.code = 500
     }
 
     ctx.body = result

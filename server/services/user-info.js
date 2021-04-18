@@ -39,8 +39,7 @@ const user = {
   async signIn( formData ) {
     let resultData = await userModel.getOneByUserNameAndPassword({
       'password': formData.password,
-      'name': formData.userName})
-      console.log('formData',formData)
+      'name': formData.username})
     return resultData
   },
 
@@ -56,9 +55,10 @@ const user = {
     let userInfo = {
       // id: resultData.id,
       // email: resultData.email,
-      userName: resultData.name,
+      name: resultData.name,
       // detailInfo: resultData.detail_info,
-      createTime: resultData.c_time
+      createTime: resultData.c_time,
+      roles:['admin']
     }
     return userInfo
   },
