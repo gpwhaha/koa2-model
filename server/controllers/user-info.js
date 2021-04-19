@@ -53,7 +53,8 @@ module.exports = {
       }
       let token = jwt.sign(payload, 'my_token');
       session.TokenKey = token
-      // let userInfo = await userInfoService.getUserInfoByUserName(userResult.name)  
+      let userInfo = await userInfoService.updateUserToken(token,userResult.name)  
+      // console.log('userInfo',userInfo)
       // result.data = userInfo;
       result.data = {
         token
@@ -127,14 +128,10 @@ module.exports = {
    */
   async getLoginUserInfo(ctx) {
     let session = ctx.session
-    let isLogin = session.isLogin
     let userName = session.userName
-
-    console.log('session=', session)
+    let token = ctx.request.headers["token"];
+    // console.log('token=', token)
     // 判断用户是否登录，获取cookie里的SESSIONID
-    const SESSIONID = ctx.cookies.get('USER_SID')
-    // const SESSIONID = ctx.cookies.get('SESSIONID')
-    console.log('SESSIONID=', SESSIONID)
     let result = {
       success: false,
       message: '',
@@ -142,12 +139,11 @@ module.exports = {
       code: 200
     }
 
-    let userInfo = await userInfoService.getUserInfoByUserName(userName)
+    let userInfo = await userInfoService.getUserInfoByToken(token)
     if (userInfo) {
       result.data = userInfo
       result.success = true
-      result.SESSIONID = SESSIONID
-      result.message = '登陆成功'
+      result.message = '登录成功'
       result.code = 200
     } else {
       result.message = userCode.FAIL_USER_NO_LOGIN

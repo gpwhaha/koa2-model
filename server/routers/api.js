@@ -7,7 +7,7 @@ const userInfoController = require('./../controllers/user-info')
 const uploadController = require('./../controllers/upload')
 
 const routers = router
-  .get('/user/getUserInfo', userInfoController.getLoginUserInfo)
+  .post('/user/getUserInfo', userInfoController.getLoginUserInfo)
   .post('/user/signIn', userInfoController.signIn)
   .post('/user/signUp.json', userInfoController.signUp)
   .get('/user/images', userInfoController.getImages)

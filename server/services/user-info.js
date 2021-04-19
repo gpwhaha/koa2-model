@@ -61,6 +61,34 @@ const user = {
     return userInfo
   },
 
+  /**
+   * 根据token获取用户信息
+   * @param {string} token 用户token
+   * @returns 
+   */
+  async getUserInfoByToken(token){
+    let resultData = await userModel.getUserInfoByToken(token);
+    let userInfo = {
+      name: resultData.name,
+      createTime: resultData.c_time,
+      // roles:['admin']
+    }
+    return userInfo
+  },
+
+  /**
+   * 
+   * @param {string} token 用户头生成的token
+   * @returns 
+   */
+  async updateUserToken(token,name){
+    let result = await userModel.updateUserToken({
+      'token':token,
+      'name':name
+    });
+    return result;
+  },
+
 
   /**
    * 检验用户注册数据
